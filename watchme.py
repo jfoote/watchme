@@ -116,22 +116,27 @@ class Analyzer(object):
     
   def analyze(self):
     logging.debug("Analyzer.analyze called")
-    # gather rows from all log files
-    rows = []
-    for fname in os.listdir(self.directory):
-      if re.match(".*windows.csv$", fname):
-        print "fname match: ", fname
-        with open(os.path.join(self.directory, fname), "rb") as csvfile:
-          for row in csv.reader(csvfile):
-            rows.append(row)
-
-    # analyze data            
-    rows = sorted(rows, lambda x, y: x[-1] > y[-1]) # sort by time
-    for i in xrange(0, len(rows)):
-      rows[i].append(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(float(rows[i][2]))))
-      if i == len(rows) - 1:
-        break
-      rows[i].append(int(round(float(rows[i+1][2]) - float(rows[i][2]), 0)))
+    #import pdb; pdb.set_trace()
+    try:
+      # gather rows from all log files
+      rows = []
+      for fname in os.listdir(self.directory):
+        if re.match(".*windows.csv$", fname):
+          print "fname match: ", fname
+          with open(os.path.join(self.directory, fname), "rb") as csvfile:
+            for row in csv.reader(csvfile):
+              rows.append(row)
+  
+      # analyze data            
+      rows = sorted(rows, lambda x, y: x[-1] > y[-1]) # sort by time
+      for i in xrange(0, len(rows)):
+        rows[i].append(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(float(rows[i][2]))))
+        if i == len(rows) - 1:
+          break
+        rows[i].append(int(round(float(rows[i+1][2]) - float(rows[i][2]), 0)))
+    except Exception as e:
+      logging.error("error while gathering data: %s" % str(e))
+      raise e
     
     # output result
     try:
@@ -139,13 +144,18 @@ class Analyzer(object):
       with open(os.path.join(self.directory, fname), "ab") as csvfile:
         for row in rows: # TODO: fix
           csv.writer(csvfile).writerow(row)
-    except IOError as e:
-      warnings.warn(str(e))
+    except Exception as e:
+      #warnings.warn(str(e))
+      logging.error("error while writing result: %s" % str(e))
+      raise e
       
     # display result w/ default CSV app
     # TODO: make this secure
-    subprocess.Popen(os.path.join(self.directory, fname), shell=True)
-    
+    try:
+      subprocess.Popen(os.path.join(self.directory, fname), shell=True)
+    except Exception as e:
+      logging.error("error while running csv viewer app: %s" % str(e))
+      raise  
     
 class Watcher(SysTrayIcon):
   def __init__(self, path):
