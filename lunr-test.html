@@ -1,0 +1,48 @@
+<script type="text/javascript" src="lunr.js"></script>
+<script type="text/javascript">
+var index = lunr(function () {
+    this.field('title', {boost: 10})
+    this.field('body')
+    this.ref('id')
+  })
+
+index.add({
+    id: 55,
+    title: 'Foo',
+    body: 'Foo foo foo!'
+  })
+
+index.add({
+    id: 2,
+    title: 'Bar',
+    body: 'Bar bar bar!'
+  })
+function listProperties(obj) {
+   var propList = "";
+   for(var propName in obj) {
+      if(typeof(obj[propName]) != "undefined") {
+         propList += (propName + ", ");
+      }
+   }
+   alert(propList);
+}
+
+var foo = index.search('foo');
+
+//document.write(foo[0].ref);
+//listProperties(foo[0]);
+
+function searchit() {
+  query = document.getElementById('txt_name').value;
+  // TODO: input validation!!
+  //alert(query);
+  index.search(query).forEach(function(queryResult) {
+    document.writeln(queryResult)
+    document.writeln(queryResult.ref)
+    document.writeln(queryResult.score)
+  })
+}
+
+</script>
+<input type="text" name="name" id="txt_name" size="30" maxlength="70">
+<button onclick="searchit()">Try it</button>
