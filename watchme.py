@@ -123,7 +123,10 @@ class JsArrayFile(object):
           item = [i.replace("\\", "\\\\").replace("\"", "\\\"") for i in item] # escape \'s to appease JS rules, TODO: are there more to add?
       except Exception as e:
           logger.error("error processing item=%s: %s" % (str(item), str(e)))
-      self.out_fd.write("watchme_data[%d] = new Array(\"%s\", \"%s\", %s, %s); \n" % ((self.i, ) + tuple(item)))
+          
+      # [exe_name, window_title, start_time, end_time]
+      self.out_fd.write("watchme_data[%d] = {\n\tid: %d,\n\texe_name: \"%s\",\n\twindow_title: \"%s\",\n\tstart_time: %s,\n\tend_time:%s};\n" %\
+        ((self.i, self.i, ) + tuple(item)))
       self.i += 1
       
   def finish(self):
