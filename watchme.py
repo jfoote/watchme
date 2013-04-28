@@ -110,22 +110,6 @@ class Logger(threading.Thread):
     
 import subprocess, re
 
-'''
-class JsArrayFile(object):
-  def __init__(self, filename):
-      self.out_fd = file(filename, "wt")
-      self.out_fd.write("var watchme_data = new Array( \n") # beginning of array def'n
-      
-  def append(self, item):
-      if not getattr(self, "out_fd", None):
-          raise RuntimeException("out_fd not available, was finish() called already?")
-      self.out_fd.write("new Array(\"%s\", \"%s\", %s, %s), \n" % tuple(item))
-      
-  def finish(self):
-      self.out_fd.write(");") # TODO: verify this works with empty array
-      self.out_fd.close()
-      self.out_fd = None
-'''
 class JsArrayFile(object):
   def __init__(self, filename):
       self.out_fd = file(filename, "wt")
@@ -135,16 +119,14 @@ class JsArrayFile(object):
   def append(self, item):
       if not getattr(self, "out_fd", None):
           raise RuntimeException("out_fd not available, was finish() called already?")
-      #print item
       try:
-          item = [i.replace("\\", "\\\\").replace("\"", "\\\"") for i in item] # escape \'s to appease JS rules
+          item = [i.replace("\\", "\\\\").replace("\"", "\\\"") for i in item] # escape \'s to appease JS rules, TODO: are there more to add?
       except Exception as e:
           logger.error("error processing item=%s: %s" % (str(item), str(e)))
       self.out_fd.write("watchme_data[%d] = new Array(\"%s\", \"%s\", %s, %s); \n" % ((self.i, ) + tuple(item)))
       self.i += 1
       
   def finish(self):
-      #self.out_fd.write(");") # TODO: verify this works with empty array
       self.out_fd.close()
       self.out_fd = None
       self.i = 0
