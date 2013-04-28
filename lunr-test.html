@@ -33,16 +33,19 @@ var foo = index.search('foo');
 //listProperties(foo[0]);
 
 function searchit() {
+  debugger;
   query = document.getElementById('txt_name').value;
   // TODO: input validation!!
   //alert(query);
   index.search(query).forEach(function(queryResult) {
-    document.writeln(queryResult)
-    document.writeln(queryResult.ref)
-    document.writeln(queryResult.score)
+    redraw(queryResult + "<br>" + queryResult.ref + "<br>" + queryResult.score);
   })
 }
 
+function redraw(more){ 
+  document.write("<input type=\"text\" name=\"name\" id=\"txt_name\" size=\"30\" maxlength=\"70\"><button onclick=\"searchit()\">Try it</button>")
+  document.write(more)
+}
+redraw("")
+
 </script>
-<input type="text" name="name" id="txt_name" size="30" maxlength="70">
-<button onclick="searchit()">Try it</button>

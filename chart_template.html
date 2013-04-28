@@ -6,6 +6,7 @@
 
 		<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
 		<script type="text/javascript">
+		  //$data_definition
 $(function () {
         $('#container').highcharts({
             chart: {
@@ -18,7 +19,7 @@ $(function () {
                 text: 'Source: watchme'
             },
             xAxis: {
-                categories: [$categories],
+                categories: ['foo', 'bar'],
                 title: {
                     text: null
                 }
@@ -59,7 +60,7 @@ $(function () {
             },
             series: [{
                 name: 'Minutes',
-                data: [$data]
+                data: [1,2]
             }]
         });
     });
