@@ -110,52 +110,102 @@ class Logger(threading.Thread):
     
 import subprocess, re
 
+'''
+class JsArrayFile(object):
+  def __init__(self, filename):
+      self.out_fd = file(filename, "wt")
+      self.out_fd.write("var watchme_data = new Array( \n") # beginning of array def'n
+      
+  def append(self, item):
+      if not getattr(self, "out_fd", None):
+          raise RuntimeException("out_fd not available, was finish() called already?")
+      self.out_fd.write("new Array(\"%s\", \"%s\", %s, %s), \n" % tuple(item))
+      
+  def finish(self):
+      self.out_fd.write(");") # TODO: verify this works with empty array
+      self.out_fd.close()
+      self.out_fd = None
+'''
+class JsArrayFile(object):
+  def __init__(self, filename):
+      self.out_fd = file(filename, "wt")
+      self.out_fd.write("var watchme_data = new Array(); \n") # beginning of array def'n
+      self.i = 0
+      
+  def append(self, item):
+      if not getattr(self, "out_fd", None):
+          raise RuntimeException("out_fd not available, was finish() called already?")
+      #print item
+      try:
+          item = [i.replace("\\", "\\\\").replace("\"", "\\\"") for i in item] # escape \'s to appease JS rules
+      except Exception as e:
+          logger.error("error processing item=%s: %s" % (str(item), str(e)))
+      self.out_fd.write("watchme_data[%d] = new Array(\"%s\", \"%s\", %s, %s); \n" % ((self.i, ) + tuple(item)))
+      self.i += 1
+      
+  def finish(self):
+      #self.out_fd.write(");") # TODO: verify this works with empty array
+      self.out_fd.close()
+      self.out_fd = None
+      self.i = 0
+
 class Analyzer(object):
   def __init__(self, directory):
     self.directory = directory
     
   def analyze(self):
-    logging.debug("Analyzer.analyze called")
-    #import pdb; pdb.set_trace()
+    '''
+    Parses CSV files created by logger and writes result to an HTML file as 
+    a javascript array (as a workaround to same-origin-policy security). 
+    There might be a better way...
+    '''
+    logging.info("Analyzer.analyze called")
+    data = []
     try:
-      # gather rows from all log files
-      rows = []
+      js_array = JsArrayFile(os.path.join(self.directory, "alldata.js"))
+    except Exception as e:
+      logging.error("error while creating JsArrayFile: %s" % str(e))
+      raise e
+      
+    try:
       for fname in os.listdir(self.directory):
         if re.match(".*windows.csv$", fname):
           print "fname match: ", fname
-          with open(os.path.join(self.directory, fname), "rb") as csvfile:
+          start_time = None
+          with open(os.path.join(self.directory, fname), "rt") as csvfile:
             for row in csv.reader(csvfile):
-              rows.append(row)
-  
-      # analyze data            
-      rows = sorted(rows, lambda x, y: x[-1] > y[-1]) # sort by time
-      for i in xrange(0, len(rows)):
-        rows[i].append(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(float(rows[i][2]))))
-        if i == len(rows) - 1:
-          break
-        rows[i].append(int(round(float(rows[i+1][2]) - float(rows[i][2]), 0)))
+              if row[0] == "window_info": # window_info row
+                if start_time != None: 
+                  # get end_time for previous row and dump to DB
+                  end_time = row[3] 
+                  js_array.append([exe_name, window_title, start_time, end_time])
+                  
+                # get data for current row
+                exe_name, window_title, start_time = row[1:]
+                  
+              else: # idle_time row
+                  if not start_time: # this is the first entry in the file, skip it
+                      continue
+                  # get end_time for previous row and dump to DB
+                  end_time = row[1]
+                  js_array.append([exe_name, window_title, start_time, end_time])
+                  
     except Exception as e:
       logging.error("error while gathering data: %s" % str(e))
       raise e
     
-    # output result
-    try:
-      fname = datetime.datetime.now().strftime("%Y-%m-%d %H.%M.%S analysis.csv")
-      with open(os.path.join(self.directory, fname), "ab") as csvfile:
-        for row in rows: # TODO: fix
-          csv.writer(csvfile).writerow(row)
+    try:  
+        js_array.finish() # write end of HTML doc
     except Exception as e:
-      #warnings.warn(str(e))
-      logging.error("error while writing result: %s" % str(e))
+      logging.error("error while writing chart postlude: %s" % str(e))
       raise e
-      
-    # display result w/ default CSV app
-    # TODO: make this secure
+    
     try:
-      subprocess.Popen(os.path.join(self.directory, fname), shell=True)
+        #chart.show()
+        pass
     except Exception as e:
-      logging.error("error while running csv viewer app: %s" % str(e))
-      raise  
+      logging.error("error while launching chart viewer: %s" % str(e))
+      raise e
     
 class Watcher(SysTrayIcon):
   def __init__(self, path):
@@ -180,10 +230,14 @@ class Watcher(SysTrayIcon):
   def analyze(self, trayicon):
     self.analyzer.analyze()
     
-if __name__=="__main__":  
-  appdir = os.path.join(os.environ["HOMEPATH"], "watchme")
+if __name__=="__main__":
+  datadir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
+  print "datadir = " + datadir
+  if not os.path.exists(datadir):
+      os.makedirs(datadir)
+      
   logger = logging.getLogger()
-  handler = logging.FileHandler(os.path.join(appdir, "log.txt"))
+  handler = logging.FileHandler(os.path.join(datadir, "log.txt"))
   fmt = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
   handler.setFormatter(fmt)
   logger.addHandler(handler)
@@ -192,4 +246,4 @@ if __name__=="__main__":
   #else:
   #  logger.setLevel(logging.INFO)
   
-  Watcher(appdir)
+  Watcher(datadir)
