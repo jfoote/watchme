@@ -74,10 +74,52 @@ $(function () {
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
 		<script type="text/javascript" src="data/alldata.js"></script>
-<script type="text/javascript"> 
-  debugger;
-  document.write(watchme_data[555].window_title) 
-  </script>
+
+<script type="text/javascript" src="lib/lunr.js"></script>
+<script type="text/javascript">
+var index = lunr(function () {
+    //this.field('exe_name')
+    this.field('window_title', {boost: 10})
+    //this.field('start_time')
+    //this.field('end_time')
+    this.ref('id')
+  })
+
+// for each item in watchme_data...
+document.writeln(watchme_data.length);
+watchme_data.forEach( function(item) {
+  window_title_tokd = JSON.stringify(item.window_title).replace(/\W/g, ' ')
+  document.write(window_title_tokd + " ")
+  index.add(item);
+  index.add({
+    id: item.id,
+    window_title: window_title_tokd
+  });
+});
+/*
+index.add({
+    id: 55,
+    title: 'Foo',
+    body: 'Foo foo foo!'
+  })
+  */
+// then hook up search to a button! (see lunr-test.html)
+function searchit() {
+  query = document.getElementById('txt_name').value;
+  // TODO: input validation!!
+  //alert(query);
+  index.search(query).forEach(function(queryResult) {
+    debugger;
+    document.writeln(watchme_data[queryResult.ref].window_title + "<br>");
+  })
+}
+
+function redraw(more){ 
+  document.write("<input type=\"text\" name=\"name\" id=\"txt_name\" size=\"30\" maxlength=\"70\"><button onclick=\"searchit()\">Try it</button>")
+  document.write(more)
+}
+redraw("")
+</script>
 
 	</body>
 </html>

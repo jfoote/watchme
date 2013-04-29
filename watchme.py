@@ -125,7 +125,7 @@ class JsArrayFile(object):
           logger.error("error processing item=%s: %s" % (str(item), str(e)))
           
       # [exe_name, window_title, start_time, end_time]
-      self.out_fd.write("watchme_data[%d] = {\n\tid: %d,\n\texe_name: \"%s\",\n\twindow_title: \"%s\",\n\tstart_time: %s,\n\tend_time:%s};\n" %\
+      self.out_fd.write("watchme_data[%d] = {\n\tid: %d,\n\texe_name: \"%s\",\n\twindow_title: \"%s\",\n\tstart_time: \"%s\",\n\tend_time:\"%s\"};\n" %\
         ((self.i, self.i, ) + tuple(item)))
       self.i += 1
       
@@ -134,6 +134,7 @@ class JsArrayFile(object):
       self.out_fd = None
       self.i = 0
 
+# C:\Users\jmfoote\watchme>python -i -c "from watchme import Analyzer; import os; a = Analyzer(os.getcwd() + \"\\data\"); a.analyze()"
 class Analyzer(object):
   def __init__(self, directory):
     self.directory = directory
