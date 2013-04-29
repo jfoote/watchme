@@ -6,7 +6,9 @@
 
 		<script type="text/javascript" src="lib/jquery-1.9.1.js"></script>
 		<script type="text/javascript">
-function drawChart(){
+function drawChart(category_list, data_list){
+      category_list = typeof category_list !== 'undefined' ? category_list : ['foo'];
+      data_list = typeof data_list !== 'undefined' ? data_list : [2];
         $('#container').highcharts({
             chart: {
                 type: 'bar'
@@ -18,7 +20,7 @@ function drawChart(){
                 text: 'Source: watchme'
             },
             xAxis: {
-                categories: ['foo', 'bar'],
+                categories: category_list,
                 title: {
                     text: null
                 }
@@ -59,7 +61,7 @@ function drawChart(){
             },
             series: [{
                 name: 'Minutes',
-                data: [1,2]
+                data: data_list
             }]
         });
     };
@@ -94,9 +96,14 @@ function searchit_simple() {
       }
     })
   });
+  cats = new Array()
+  dats = new Array()
   for(var k in matches) {
     document.writeln(k + " " + matches[k] + "<br>");
+    cats.push(k)
+    dats.push(matches[k])
   }
+  drawChart(cats, dats);
 }
 
 function redraw(more){ 
