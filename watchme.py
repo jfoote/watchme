@@ -124,8 +124,8 @@ class JsArrayFile(object):
       except Exception as e:
           logger.error("error processing item=%s: %s" % (str(item), str(e)))
           
-      # [exe_name, window_title, start_time, end_time]
-      self.out_fd.write("watchme_data[%d] = {\n\tid: %d,\n\texe_name: \"%s\",\n\twindow_title: \"%s\",\n\tstart_time: \"%s\",\n\tend_time:\"%s\"};\n" %\
+      # [exe_name, window_title, start_time, end_time, date]
+      self.out_fd.write("watchme_data[%d] = {\n\tid: %d,\n\texe_name: \"%s\",\n\twindow_title: \"%s\",\n\tstart_time: %s,\n\tend_time:%s, \n\tdate:\"%s\"};\n" %\
         ((self.i, self.i, ) + tuple(item)))
       self.i += 1
       
@@ -164,7 +164,8 @@ class Analyzer(object):
                 if start_time != None: 
                   # get end_time for previous row and dump to DB
                   end_time = row[3] 
-                  js_array.append([exe_name, window_title, start_time, end_time])
+                  date = datetime.datetime.fromtimestamp(float(start_time)).strftime("%Y-%m-%d")
+                  js_array.append([exe_name, window_title, start_time, end_time, date])
                   
                 # get data for current row
                 exe_name, window_title, start_time = row[1:]
@@ -174,7 +175,8 @@ class Analyzer(object):
                       continue
                   # get end_time for previous row and dump to DB
                   end_time = row[1]
-                  js_array.append([exe_name, window_title, start_time, end_time])
+                  date = datetime.datetime.fromtimestamp(float(start_time)).strftime("%Y-%m-%d")
+                  js_array.append([exe_name, window_title, start_time, end_time, date])
                   
     except Exception as e:
       logging.error("error while gathering data: %s" % str(e))
