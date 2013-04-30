@@ -145,7 +145,7 @@ class Analyzer(object):
     a javascript array (as a workaround to same-origin-policy security). 
     There might be a better way...
     '''
-    logging.info("Analyzer.analyze called")
+    logging.info("Analyzer.analyze called, self.directory=%s" % self.directory)
     data = []
     try:
       js_array = JsArrayFile(os.path.join(self.directory, "alldata.js"))
@@ -155,29 +155,32 @@ class Analyzer(object):
       
     try:
       for fname in os.listdir(self.directory):
-        if re.match(".*windows.csv$", fname):
-          print "fname match: ", fname
-          start_time = None
-          with open(os.path.join(self.directory, fname), "rt") as csvfile:
-            for row in csv.reader(csvfile):
-              if row[0] == "window_info": # window_info row
-                if start_time != None: 
-                  # get end_time for previous row and dump to DB
-                  end_time = row[3] 
-                  date = datetime.datetime.fromtimestamp(float(start_time)).strftime("%Y-%m-%d")
-                  js_array.append([exe_name, window_title, start_time, end_time, date])
-                  
-                # get data for current row
-                exe_name, window_title, start_time = row[1:]
-                  
-              else: # idle_time row
-                  if not start_time: # this is the first entry in the file, skip it
-                      continue
-                  # get end_time for previous row and dump to DB
-                  end_time = row[1]
-                  date = datetime.datetime.fromtimestamp(float(start_time)).strftime("%Y-%m-%d")
-                  js_array.append([exe_name, window_title, start_time, end_time, date])
-                  
+        try:
+          if re.match(".*windows.csv$", fname):
+            start_time = None
+            with open(os.path.join(self.directory, fname), "rt") as csvfile:
+              for row in csv.reader(csvfile):
+                if row[0] == "window_info": # window_info row
+                  if start_time != None: 
+                    # get end_time for previous row and dump to DB
+                    end_time = row[3] 
+                    date = datetime.datetime.fromtimestamp(float(start_time)).strftime("%Y-%m-%d")
+                    js_array.append([exe_name, window_title, start_time, end_time, date])
+                    
+                  # get data for current row
+                  exe_name, window_title, start_time = row[1:]
+                    
+                else: # idle_time row
+                    if not start_time: # this is the first entry in the file, skip it
+                        continue
+                    # get end_time for previous row and dump to DB
+                    end_time = row[1]
+                    date = datetime.datetime.fromtimestamp(float(start_time)).strftime("%Y-%m-%d")
+                    js_array.append([exe_name, window_title, start_time, end_time, date])
+        except Exception as e:
+          logging.error("error while processing file: %s" % csvfile.name)
+          raise e
+              
     except Exception as e:
       logging.error("error while gathering data: %s" % str(e))
       raise e
@@ -189,8 +192,8 @@ class Analyzer(object):
       raise e
     
     try:
-        #chart.show()
-        pass
+      # TODO: make sure this is secure
+      subprocess.Popen("chart.html", shell=True)
     except Exception as e:
       logging.error("error while launching chart viewer: %s" % str(e))
       raise e
@@ -203,7 +206,7 @@ class Watcher(SysTrayIcon):
     self.analyzer = Analyzer(path)
     self.logger = Logger(path)
     self.logger.start()
-    logging.debug("Logger started; logging to %s" % path)
+    logging.debug("Logger started; path=%s" % path)
     SysTrayIcon.__init__(self, 
       "watchme.ico", 
       "watchme", 
@@ -220,7 +223,6 @@ class Watcher(SysTrayIcon):
     
 if __name__=="__main__":
   datadir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
-  print "datadir = " + datadir
   if not os.path.exists(datadir):
       os.makedirs(datadir)
       
