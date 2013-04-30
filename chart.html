@@ -7,8 +7,11 @@
 		<script type="text/javascript" src="lib/jquery-1.9.1.js"></script>
 		<script type="text/javascript">
 function drawChart(category_list, data_list){
-      category_list = typeof category_list !== 'undefined' ? category_list : ['foo'];
-      data_list = typeof data_list !== 'undefined' ? data_list : [2];
+      category_list = typeof category_list !== 'undefined' ? category_list : [];
+      data_list = typeof data_list !== 'undefined' ? data_list : [];
+        if (typeof $('#container').highcharts() != 'undefined') {
+          $('#container').highcharts().destroy()
+        }
         $('#container').highcharts({
             chart: {
                 type: 'bar'
@@ -84,8 +87,8 @@ function searchit_simple() {
   // TODO: input validation!! maybe like this: window_title_tokd = JSON.stringify(item.window_title).replace(/\W/g, ' ')
   var matches = {};
   watchme_data.forEach(function(item) {
-    query.split(" ").forEach(function(tok) {
-      if( item.window_title.search(tok) != -1) {
+    query.toLowerCase().split(" ").forEach(function(tok) {
+      if( item.window_title.toLowerCase().search(tok) != -1) {
         delta = item.end_time - item.start_time;
         if (item.date in matches) {
           matches[item.date] = matches[item.date] + delta
@@ -99,7 +102,7 @@ function searchit_simple() {
   cats = new Array()
   dats = new Array()
   for(var k in matches) {
-    document.writeln(k + " " + matches[k] + "<br>");
+    //document.writeln(k + " " + matches[k] + "<br>");
     cats.push(k)
     dats.push(matches[k])
   }
@@ -108,7 +111,7 @@ function searchit_simple() {
 
 function redraw(more){ 
   document.write("<input type=\"text\" name=\"name\" id=\"txt_name\" size=\"30\" maxlength=\"70\"><button onclick=\"searchit_simple()\">Try it</button>")
-  document.write(more)
+  //document.write(more)
 }
 redraw("")
 </script>
