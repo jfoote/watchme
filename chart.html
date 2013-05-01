@@ -82,6 +82,14 @@ $(drawChart);
 
 <script type="text/javascript">
 
+$("#txt_name").keyup(function(event){
+  document.writeln("test")
+    if(event.keyCode == 13){
+        $("#search_button").click();
+    }
+});
+
+
 function searchit_simple() {
   query = document.getElementById('txt_name').value;
   // TODO: input validation!! maybe like this: window_title_tokd = JSON.stringify(item.window_title).replace(/\W/g, ' ')
@@ -109,12 +117,12 @@ function searchit_simple() {
   drawChart(cats, dats);
 }
 
-function redraw(more){ 
-  document.write("<input type=\"text\" name=\"name\" id=\"txt_name\" size=\"30\" maxlength=\"70\"><button onclick=\"searchit_simple()\">Try it</button>")
-  //document.write(more)
-}
-redraw("")
-</script>
+d = new Date(1350679244.66*1000);
+document.write(d);
 
+
+</script>
+<input type="text" name="name" id="txt_name" size="30" maxlength="70">
+<button id="search_button" onclick="searchit_simple()" onkeydown="if (event.keyCode == 13) document.getElementById('btnSearch').click()">Search</button>
 	</body>
 </html>

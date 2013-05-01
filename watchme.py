@@ -164,7 +164,7 @@ class Analyzer(object):
                   if start_time != None: 
                     # get end_time for previous row and dump to DB
                     end_time = row[3] 
-                    date = datetime.datetime.fromtimestamp(float(start_time)).strftime("%Y-%m-%d")
+                    date = datetime.datetime.fromtimestamp(float(start_time)).strftime("%Y/%m/%d")
                     js_array.append([exe_name, window_title, start_time, end_time, date])
                     
                   # get data for current row
@@ -175,7 +175,7 @@ class Analyzer(object):
                         continue
                     # get end_time for previous row and dump to DB
                     end_time = row[1]
-                    date = datetime.datetime.fromtimestamp(float(start_time)).strftime("%Y-%m-%d")
+                    date = datetime.datetime.fromtimestamp(float(start_time)).strftime("%Y/%m/%d")
                     js_array.append([exe_name, window_title, start_time, end_time, date])
         except Exception as e:
           logging.error("error while processing file: %s" % csvfile.name)
@@ -186,7 +186,7 @@ class Analyzer(object):
       raise e
     
     try:  
-        js_array.finish() # write end of HTML doc
+        js_array.finish()
     except Exception as e:
       logging.error("error while writing chart postlude: %s" % str(e))
       raise e
