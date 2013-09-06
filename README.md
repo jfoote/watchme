@@ -1,4 +1,4 @@
 watchme
 =======
 
-Window usage data collector &amp; analyzer
+Window usage data collector and analyzer
