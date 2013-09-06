@@ -118,7 +118,7 @@ function searchit_simple() {
         delta = item.end_time - item.start_time;
         
         // add time for this entry to matches
-        if (item.date in matches) {
+        if (jdate_str in matches) {
           matches[jdate_str] = matches[jdate_str] + delta
         } else {
           matches[jdate_str] = delta;
