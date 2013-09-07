@@ -1,6 +1,6 @@
 watchme
 =======
-Window usage data collector and analyzer script for MS Windows.
+Window usage data collector and analyzer script for MS Windows. AKA an "active window logger" or "active window tracker"
 
 Written by Jonathan Foote (jmfoote@andrew.cmu.edu)
 
@@ -33,13 +33,11 @@ Requires pywin32: http://sourceforge.net/projects/pywin32/
 
 Background
 ----------
-
-This is a toy application that I developed as a result of thinking about how cognitive load is affected by task switching and decrease in productivity (and increase in defect rate) that results from working in certain environments. Ostensibly this script could be extended to work on Linux, OSX (and all of the other platforms that modern devs use) so that information could be aggregated across systems and give you an accurate picture of what you are working on. These were my thoughts before I found out that "time cockpit" existed (I haven't tried it, but it looks cool, and this is more or less what it is trying to accomplish). Anyway, feel free to hack this up, as I may not go anywhere with it myself :) This script is very simple, but if you have any questions or comments feel free to drop me a line at jmfoote@andrew.cmu.edu.
+This is a toy application that I developed for fun, largely as a pastime while I was supposed to be watching chick flicks with my wife. Please feel free to hack it up.
 
 
 TODOs
 -----
-
 - [x] Daemonize & survive Windows sleeping (works with python.exe, but not pythonw.exe)
 - [x] Add idle time logging
 - [x] Gather licenses for included open source code
@@ -61,5 +59,4 @@ TODOs
 
 Licenses
 --------
-
 See LICENSE.txt for details on the licenses of this project and included open source code
