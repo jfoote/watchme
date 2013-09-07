@@ -2,15 +2,6 @@
 Windows usage data collector & analyzer
 Usage: python watchme.py ... then use the task tray interface
 
-TODOs:
-Daemonize & survive Windows sleeping (works with python.exe, but not pythonw.exe) [DONE]
-Add idle time logging [DONE]
-Add support for idle_time/window_time processing to analyzer
-Add additional analysis
-Implement lock/some sort of singleton to prevent running proc twice
-Add ML :)
-
-Written by Jonathan Foote (jmfoote@andrew.cmu.edu)
 
 NTS: to get date/time in excel: =(((C2-(6*3600))/86400)+25569)
 '''
@@ -231,9 +222,6 @@ if __name__=="__main__":
   fmt = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
   handler.setFormatter(fmt)
   logger.addHandler(handler)
-  #if len(sys.argv) > 1 and sys.argv[1] == "-d":
   logger.setLevel(logging.DEBUG)
-  #else:
-  #  logger.setLevel(logging.INFO)
   
   Watcher(datadir)
