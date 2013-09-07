@@ -7,7 +7,7 @@ Written by Jonathan Foote (jmfoote@andrew.cmu.edu)
 
 Description
 -----------
-watchme.py is a Python script that polls to collect information about the active window in your window manager. It only works on Windows. The script can be controlled  via a the task icon it adds the system tray after it is launched. In addition to tracking window information, it also includes some basic data analysis capabilities.
+watchme.py is a Python script for MS Windows that polls to collect information about the active window. The script can be controlled via a the task tray interface it adds the system tray after it is launched. In addition to tracking window information, it also includes some basic data analysis capabilities.
 
 
 WARNING!
@@ -33,7 +33,7 @@ Requires pywin32: http://sourceforge.net/projects/pywin32/
 
 Background
 ----------
-This is a toy application that I developed for fun, largely as a pastime while I was supposed to be watching chick flicks with my wife. Please feel free to hack it up.
+This is a toy application that I occassionally work on for fun, largely as a pastime when I end up having to watch a chick flick or reality TV :). Please feel free to hack it up.
 
 
 TODOs
