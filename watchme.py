@@ -162,6 +162,13 @@ class Analyzer(object):
                   exe_name, window_title, start_time = row[1:]
                     
                 else: # idle_time row
+                    continue 
+                    # ^^ this is a workaround for a bug in idle time tracking; in some 
+                    # cases (NTS: see 2012-10-21 rows 100 and 101) idle_start is
+                    # _after_ the previous window's start time. 
+                    # Unfortunately this will cause the analyzer to count window time 
+                    # after the user has stopped input for extended periods of time :(
+                    # TODO: Fix this bug and delete this workaround!
                     if not start_time: # this is the first entry in the file, skip it
                         continue
                     # get end_time for previous row and dump to DB

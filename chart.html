@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Highcharts Example</title>
+		<title>watchme analyzer</title>
 
 		<script type="text/javascript" src="lib/jquery-1.9.1.js"></script>
 		<script type="text/javascript">
@@ -119,7 +119,7 @@ function searchit_simple() {
         
         // add time for this entry to matches
         if (jdate_str in matches) {
-          matches[jdate_str] = matches[jdate_str] + delta
+          matches[jdate_str] = matches[jdate_str] + delta;
         } else {
           matches[jdate_str] = delta;
         }
