@@ -282,24 +282,24 @@ class Analyzer(object):
                 raise e
                 
     except Exception as e:
-      logging.error("error while gathering data: %s" % str(e))
-      raise e
-    
+        logging.error("error while gathering data: %s" % str(e))
+        raise e
+      
     # Close the Javascript Array file, which now contains all activity data.
     try:  
         js_array.finish()
     except Exception as e:
-      logging.error("error while writing chart postlude: %s" % str(e))
-      raise e
-    
+        logging.error("error while writing chart postlude: %s" % str(e))
+        raise e
+      
     # Launch the analyzer page (which reads the Javascript array file) with the
     # default browser.
     try:
-      subprocess.Popen("chart.html", shell=True)
+        subprocess.Popen("chart.html", shell=True)
     except Exception as e:
-      logging.error("error while launching chart viewer: %s" % str(e))
-      raise e
-    
+        logging.error("error while launching chart viewer: %s" % str(e))
+        raise e
+      
 class Watcher(SysTrayIcon):
     '''
     Watches window activity and supplies a UI to the user via a system tray
