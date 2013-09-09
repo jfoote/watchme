@@ -9,7 +9,7 @@ Original code is released under the MIT license; see LICENSE.md for details.
 Design notes:
 __main__ creates a Watcher
 
-Watcher instantiates a Logger and an Analyzer and connects them to system 
+Watcher instantiates a Logger and an Analyzer and connects them to a system 
   tray widget (which it also creates).
 
 Logger polls every second, collecting window info and writing it to CSV files
@@ -18,7 +18,7 @@ Logger polls every second, collecting window info and writing it to CSV files
 
 Analyzer aggregates data from all of the CSV files and writes them to a JS
   file, then launches a web page (with the default browser) that lets the
-  user analyzer the data. Analyzer is invoked via the system tray widget
+  user analyze the data. Analyzer is invoked via the system tray widget
   right click menu.
 '''
 
