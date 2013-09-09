@@ -249,12 +249,6 @@ class Analyzer(object):
                                 # to log the info for the preceding window_info
                                 # (since we know know the end_time) and move on.
                                 
-                                # ^^ this is a workaround for a bug in idle time tracking; in some 
-                                # cases (NTS: see 2012-10-21 rows 100 and 101) idle_start is
-                                # _after_ the previous window's start time. 
-                                # Unfortunately this will cause the analyzer to count window time 
-                                # after the user has stopped input for extended periods of time :(
-                                # TODO: Fix this bug and delete this workaround!
                                 if not start_time: 
                                     # If we haven't seen a start time, this 
                                     # log file started with an idle_time row: 
