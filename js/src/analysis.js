@@ -67,11 +67,12 @@ function drawChart(start_date_ms, data_list){
     }
 
 
-$("#txt_name").keyup(function(event){
-  document.writeln("test")
-    if(event.keyCode == 13){
-        $("#search_button").click();
-    }
+$(document).ready(function() {
+  $("#txt_name").keyup(function(event){
+      if(event.keyCode == 13){
+          $("#search_button").click();
+      }
+  });
 });
 
 
