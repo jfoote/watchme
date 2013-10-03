@@ -23,9 +23,18 @@ Analyzer aggregates data from all of the CSV files and writes them to a JS
 '''
 
 from ctypes import windll, Structure, c_ulong, byref
-import ctypes, threading, time, os, warnings, datetime, sys, subprocess, re
+import ctypes
+import threading
+import time
+import os
+import warnings
+import datetime
+import sys
+import subprocess
+import re
 from collections import namedtuple
-import csv, logging
+import csv
+import logging
 
 from systrayicon import SysTrayIcon
 
