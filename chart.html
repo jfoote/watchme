@@ -1,18 +1,18 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>watchme analyzer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>watchme analyzer</title>
 
     <!-- Libraries -->
-    <script type="text/javascript" src="lib/jquery-1.9.1.js"></script>
-    <script src="lib/Highcharts-3.0.1/js/highcharts.js"></script>
-    <script src="lib/Highcharts-3.0.1/js/modules/exporting.js"></script>
+    <script type="text/javascript" src="js/vendor/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="js/vendor/Highcharts-3.0.1/js/highcharts.js"></script>
+    <script type="text/javascript" src="js/vendor/Highcharts-3.0.1/js/modules/exporting.js"></script>
     <!-- Libraries -->
 
 
     <!-- Application Code -->
-    <script type="text/javascript" src="analysis.js"></script>
+    <script type="text/javascript" src="js/src/analysis.js"></script>
     <!-- Application Code -->
 
     
@@ -22,12 +22,12 @@
   </head>
   <body>
     <h1>Analyzer</h1>
-    <p>Please search for a activity and a graph will be displayed below.</p>
+    <p>Please search for an activity and a graph will be displayed below.</p>
 
     <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
     <select id="searchOptions">
-        <option value="" disabled="disabled" selected="selected">Please select a name</option>
+        <option value="" disabled="disabled" selected="selected">Please select a search type</option>
         <option value="exe_name">Executable Name</option>
         <option value="window_title">Window Title</option>
     </select>
