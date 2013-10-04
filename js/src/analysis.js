@@ -1,14 +1,17 @@
-function drawChart(start_date_ms, data_list){
+function drawChart(search_title, start_date_ms, data_list){
         if (typeof $('#container').highcharts() != 'undefined') {
           $('#container').highcharts().destroy()
         }
+
+        var chartTitle = 'Time spent in selected windows ' + search_title + '.'
+
         $('#container').highcharts({
             chart: {
                 zoomType: 'x',
                 spacingRight: 20
             },
             title: {
-                text: 'Time spent in selected windows'
+                text: chartTitle
             },
             subtitle: {
                 text: document.ontouchstart === undefined ?
@@ -128,5 +131,5 @@ function searchit_simple() {
   
   // finally, draw the chart
   var ms = Date.UTC(start_date.getUTCFullYear(), start_date.getUTCMonth(), start_date.getUTCDate());
-  drawChart(ms, values);
+  drawChart(query, ms, values);
 }
