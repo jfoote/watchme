@@ -1,0 +1,136 @@
+body{
+	background-color: #aaa;
+	/*background-image: url(imgs/tweed.png);*/
+}
+
+
+h1, h2{
+	text-align: center;
+}
+
+
+#mainContainer {
+	background-color: #fff;
+	width: 80%;
+	margin: 2em auto;
+	padding: 1em;
+}
+
+
+#container {
+	min-width: 400px; 
+	height: 400px; 
+	margin: 2em auto;
+	clear: both;
+	/*border: 1px solid #000;*/
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
+
+#searchContainer {
+	text-align: center;
+}
+
+
+#pie_container {
+	min-width: 310px; 
+	height: 400px; 
+	margin: 0 auto;
+}
+
+
+#table_of_apps {
+	display: inline-block;
+	margin: 2em auto;
+}
+
+
+<code>ul{
+  width:760px;
+  margin-bottom:20px;
+  overflow:hidden;
+  border-top:1px solid #ccc;
+}
+li{
+  line-height:1.5em;
+  border-bottom:1px solid #ccc;
+  float:left;
+  display:inline;
+}
+#double li  { width:50%;} 
+#triple li  { width:33.333%; } 
+#quad li    { width:25%; } 
+#six li     { width:16.666%; } 
+
+
+
+
+
+/***************************
+*  Not used at the moment. *
+****************************/
+
+.mytable {
+	width: 50%;
+	padding: 1em;
+	margin: 0;
+}
+
+caption {
+	padding: 0 0 5px 0;
+	width: 700px;	 
+	font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	text-align: right;
+}
+
+th {
+	font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica,
+	sans-serif;
+	color: #6D929B;
+	border-right: 1px solid #C1DAD7;
+	border-bottom: 1px solid #C1DAD7;
+	border-top: 1px solid #C1DAD7;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	text-align: left;
+	padding: 6px 6px 6px 12px;
+	background: #CAE8EA url(imgs/bg_header.jpg) no-repeat;
+}
+
+th.nobg {
+	border-top: 0;
+	border-left: 0;
+	border-right: 1px solid #C1DAD7;
+	background: none;
+}
+
+th.spec {	
+	border-left: 1px solid #C1DAD7;
+	border-top: 0;
+	background: #fff url(imgs/bullet1.gif) no-repeat;
+	font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica,
+	sans-serif;
+}
+
+th.specalt {
+	border-left: 1px solid #C1DAD7;
+	border-top: 0;
+	background: #f5fafa url(imgs/bullet2.gif) no-repeat;
+	font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica,
+	sans-serif;
+	color: #B4AA9D;
+}
+
+td {
+	border-right: 1px solid #C1DAD7;
+	border-bottom: 1px solid #C1DAD7;
+	background: #fff;
+	padding: 6px 6px 6px 12px;
+	color: #6D929B;
+}
+
+
+td.alt {
+	background: #F5FAFA;
+	color: #B4AA9D;
+}
