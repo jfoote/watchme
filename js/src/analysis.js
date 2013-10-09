@@ -1,4 +1,20 @@
-function drawChart(search_title, start_date_ms, data_list){
+$(document).ready(function() {
+
+  // Wire up the search button, so that when enter is hit that it executes
+  $("#txt_name").keyup(function(event){
+      if(event.keyCode == 13){
+          $("#search_button").click();
+      }
+  });
+
+
+  populate_list_of_executes();
+});
+
+
+
+
+function draw_chart(search_title, start_date_ms, data_list){
         if (typeof $('#container').highcharts() != 'undefined') {
           $('#container').highcharts().destroy()
         }
@@ -70,7 +86,7 @@ function drawChart(search_title, start_date_ms, data_list){
     };
 
 
-function drawPieChart(data_list){
+function draw_pie_chart(data_list){
   if (typeof $('#pie_container').highcharts() != 'undefined') {
     $('#pie_container').highcharts().destroy()
   }
@@ -82,7 +98,7 @@ function drawPieChart(data_list){
           plotShadow: false
       },
       title: {
-          text: 'You EXEs listed by most frequently brought into focus'
+          text: 'Your EXEs listed by most frequently brought into focus'
       },
       tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -109,19 +125,12 @@ function drawPieChart(data_list){
 };
 
 
-$(document).ready(function() {
 
-  $("#txt_name").keyup(function(event){
-      if(event.keyCode == 13){
-          $("#search_button").click();
-      }
-  });
-
-
-  // var table = $('<table></table>').addClass('mytable');
-
+function populate_list_of_executes(){
+  
   var exeNames = [];
   watchme_data.forEach(function(item) {
+    // Filter out redundant entries naturally
     if(item.exe_name !== ""){
       exeNames.push(item.exe_name.toLowerCase());
     }
@@ -147,13 +156,15 @@ $(document).ready(function() {
   //   pieChartData.push(data_point);
   // });
 
-  // drawPieChart(pieChartData);
+  // draw_pie_chart(pieChartData);
 
 
+  // Append list items to unordered list
   $.each(uniqueNames, function(i, el){
     $("code ul").append("<li>" + el + "</li>");
   });
-});
+
+};
 
 
 function searchit_simple() {
@@ -208,5 +219,5 @@ function searchit_simple() {
   
   // finally, draw the chart
   var ms = Date.UTC(start_date.getUTCFullYear(), start_date.getUTCMonth(), start_date.getUTCDate());
-  drawChart(query, ms, values);
+  draw_chart(query, ms, values);
 }
