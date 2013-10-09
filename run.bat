@@ -1,1 +1,1 @@
-wpython watchme.py
+python watchme.py
