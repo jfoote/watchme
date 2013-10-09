@@ -3,7 +3,7 @@ function drawChart(search_title, start_date_ms, data_list){
           $('#container').highcharts().destroy()
         }
 
-        var chartTitle = 'Time spent in selected windows ' + search_title + '.'
+        var chartTitle = 'Time spent in selected windows: ' + search_title + '.'
 
         $('#container').highcharts({
             chart: {
@@ -47,7 +47,7 @@ function drawChart(search_title, start_date_ms, data_list){
                     },
                     lineWidth: 1,
                     marker: {
-                        enabled: false
+                        enabled: true
                     },
                     shadow: false,
                     states: {
@@ -67,14 +67,91 @@ function drawChart(search_title, start_date_ms, data_list){
                 data: data_list
             }]
         });
-    }
+    };
+
+
+function drawPieChart(data_list){
+  if (typeof $('#pie_container').highcharts() != 'undefined') {
+    $('#pie_container').highcharts().destroy()
+  }
+
+  $('#pie_container').highcharts({
+      chart: {
+          plotBackgroundColor: null,
+          plotBorderWidth: null,
+          plotShadow: false
+      },
+      title: {
+          text: 'You EXEs listed by most frequently brought into focus'
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      plotOptions: {
+          pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                  enabled: true,
+                  color: '#000000',
+                  connectorColor: '#000000',
+                  format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+              }
+          }
+      },
+      series: [{
+          type: 'pie',
+          name: 'A list of your most used EXEs',
+          data: data_list
+      }]
+  });
+
+};
 
 
 $(document).ready(function() {
+
   $("#txt_name").keyup(function(event){
       if(event.keyCode == 13){
           $("#search_button").click();
       }
+  });
+
+
+  // var table = $('<table></table>').addClass('mytable');
+
+  var exeNames = [];
+  watchme_data.forEach(function(item) {
+    if(item.exe_name !== ""){
+      exeNames.push(item.exe_name.toLowerCase());
+    }
+  });
+
+  var uniqueNames = [];
+  $.each(exeNames, function(i, el){
+    if($.inArray(el, uniqueNames) === -1){
+      uniqueNames.push(el);
+    }
+  });
+
+
+  // var pieChartData = [];
+
+  // $.each(uniqueNames, function(i, el){
+  //   var data_point = [];
+  //   data_point.push(el);
+
+  //   var size = exeNames.slice(0).sort().indexOf(el);
+  //   data_point.push(size);
+
+  //   pieChartData.push(data_point);
+  // });
+
+  // drawPieChart(pieChartData);
+
+
+  $.each(uniqueNames, function(i, el){
+    $("code ul").append("<li>" + el + "</li>");
   });
 });
 

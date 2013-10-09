@@ -1,40 +1,55 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>watchme analyzer</title>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Watchme Analyzer</title>
 
-    <!-- Libraries -->
-    <script type="text/javascript" src="js/vendor/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="js/vendor/Highcharts-3.0.1/js/highcharts.js"></script>
-    <script type="text/javascript" src="js/vendor/Highcharts-3.0.1/js/modules/exporting.js"></script>
-    <!-- Libraries -->
+        <!-- Libraries -->
+        <script type="text/javascript" src="js/vendor/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="js/vendor/Highcharts-3.0.1/js/highcharts.js"></script>
+        <script type="text/javascript" src="js/vendor/Highcharts-3.0.1/js/modules/exporting.js"></script>
+        <!-- Libraries -->
 
+        <!-- Generated Script Files -->
+        <script type="text/javascript" src="data/alldata.js"></script>
+        <!-- Generated Script Files -->
 
-    <!-- Application Code -->
-    <script type="text/javascript" src="js/src/analysis.js"></script>
-    <!-- Application Code -->
+        <!-- Application Code -->
+        <script type="text/javascript" src="js/src/analysis.js"></script>
+        <!-- Application Code -->
 
-    
-    <!-- Generated Script Files -->
-    <script type="text/javascript" src="data/alldata.js"></script>
-    <!-- Generated Script Files -->
-  </head>
-  <body>
-    <h1>Analyzer</h1>
-    <p>Please search for an activity and a graph will be displayed below.</p>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="shortcut icon" href="resources/watchme.ico" type="image/ico">
+    </head>
+    <body>
+        <div id="mainContainer">
 
+            <h1>Watchme Analyzer</h1>
+            <p>Please search for an activity and a graph will be displayed below.</p>
 
-    <div id="top_ten_apps"></div>
-    <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+            <!-- The chart shows up here after the first search -->
+            <div id="container"></div>
 
-    <select id="searchOptions">
-        <option value="" disabled="disabled" selected="selected">Please select a search type</option>
-        <option value="exe_name">Executable Name</option>
-        <option value="window_title">Window Title</option>
-    </select>
+            <div id="searchContainer">
+                <select id="searchOptions">
+                    <option value="" disabled="disabled" selected="selected">Please select a search type</option>
+                    <option value="exe_name">Executable Name</option>
+                    <option value="window_title">Window Title</option>
+                </select>
+                <input type="text" name="name" id="txt_name" size="30" maxlength="70">
+                <button id="search_button" onclick="searchit_simple()" onkeydown="if (event.keyCode == 13) document.getElementById('btnSearch').click()">Search</button>
+            </div>
 
-    <input type="text" name="name" id="txt_name" size="30" maxlength="70">
-    <button id="search_button" onclick="searchit_simple()" onkeydown="if (event.keyCode == 13) document.getElementById('btnSearch').click()">Search</button>
-  </body>
+            <!-- Tried out a pie chart wasn't really very good way of representing anything -->
+            <!-- <div id="pie_container"></div> -->
+
+            <!-- A list of all the unique exe names collected -->
+            <div id="table_of_apps">
+                <h2>List of unique exe names</h2>
+                <code><ul id="double"> <span class="code-comment"><!-- Alter ID accordingly --></span>
+                </ul></code>
+            </div>
+        </div>
+
+    </body>
 </html>
