@@ -23,11 +23,21 @@ Analyzer aggregates data from all of the CSV files and writes them to a JS
 '''
 
 from ctypes import windll, Structure, c_ulong, byref
-import ctypes, threading, time, os, warnings, datetime, sys, subprocess, re
+import ctypes
+import threading
+import time
+import os
+import warnings
+import datetime
+import sys
+import subprocess
+import re
 from collections import namedtuple
-import csv, logging
+import csv
+import logging
 
 from systrayicon import SysTrayIcon
+
 
 def pointer_size():
     '''
@@ -37,6 +47,7 @@ def pointer_size():
     bits = platform.architecture()[0]
     return int(re.match("^([\d]*)", bits).groups()[0]) / 8
 
+
 class LastInputInfo(Structure):
     '''
     Instances of this class are used as reference (return) parameters for calls
@@ -45,6 +56,7 @@ class LastInputInfo(Structure):
     '''
     _fields_ = [("cbSize", c_ulong),
                 ("dwTime", c_ulong)] # tick count of last input event
+
 
 class Logger(threading.Thread):
     '''
@@ -152,6 +164,7 @@ class Logger(threading.Thread):
                 logging.error("failure, run exiting")
         logging.debug("stopping")
 
+
 class JsArrayFile(object):
   '''
   Represents a Javascript array file that gets written to disk.
@@ -189,6 +202,7 @@ class JsArrayFile(object):
       self.out_fd.close()
       self.out_fd = None
       self.i = 0
+
 
 # >python -i -c "from watchme import Analyzer; import os; a = Analyzer(os.getcwd() + \"\\data\"); a.analyze()"
 class Analyzer(object):
@@ -293,7 +307,8 @@ class Analyzer(object):
     except Exception as e:
         logging.error("error while launching chart viewer: %s" % str(e))
         raise e
-      
+ 
+
 class Watcher(SysTrayIcon):
     '''
     Watches window activity and supplies a UI to the user via a system tray
@@ -311,7 +326,7 @@ class Watcher(SysTrayIcon):
         self.logger.start()
         logging.debug("Logger started; path=%s" % path)
         SysTrayIcon.__init__(self, 
-            "watchme.ico", 
+            "./resources/watchme.ico", 
             "watchme", 
             (('Analyze me', None, self.analyze),), 
             on_quit=self.stop, 
@@ -325,7 +340,8 @@ class Watcher(SysTrayIcon):
     def analyze(self, trayicon):
         # Runs the analysis script
         self.analyzer.analyze()
-    
+
+
 if __name__=="__main__":
     # Launches the Watcher system tray widget, which in turns starts window 
     # activity logging
